@@ -44,10 +44,8 @@ async def get_instruments_positions():
                 pos["name"]: pos["position"],
                 "time": pos["time"]
                 })
-    except  Exception as e:
+    except Exception as e:
         positions = f"Error: {e}"
-
-    
 
     return positions
 
