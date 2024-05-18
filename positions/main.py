@@ -15,12 +15,21 @@ DB = os.getenv("DB")
 
 app = FastAPI()
 
+
+status = 'started'
 try:
     cluster = MongoClient(f"mongodb+srv://{USERNAME}:{PASSWORD}@{DB}")
     db = cluster['trading']
     collection = db['positions']
+    status = 'connected'
 except:
+    status = 'no connection with the db'
     print('no connection with the db')
+
+
+@app.get("/")
+def index():
+    return status
 
 
 @app.get("/instruments")
