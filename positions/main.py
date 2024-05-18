@@ -17,6 +17,7 @@ app = FastAPI()
 
 
 status = 'started'
+collection = None
 try:
     cluster = MongoClient(f"mongodb+srv://{USERNAME}:{PASSWORD}@{DB}")
     db = cluster['trading']
@@ -38,14 +39,15 @@ async def get_instruments_positions():
     positions = []
     try:
         data = collection.find({})
+        for pos in data:
+            positions.append({
+                pos["name"]: pos["position"],
+                "time": pos["time"]
+                })
     except  Exception as e:
         positions = f"Error: {e}"
 
-    for pos in data:
-        positions.append({
-            pos["name"]: pos["position"],
-            "time": pos["time"]
-            })
+    
 
     return positions
 
