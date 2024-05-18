@@ -22,9 +22,9 @@ try:
     db = cluster['trading']
     collection = db['positions']
     status = 'connected'
-except:
+except Exception as e:
     status = 'no connection with the db'
-    print('no connection with the db')
+    print('no connection with the db ', e)
 
 
 @app.get("/")
@@ -35,8 +35,11 @@ def index():
 @app.get("/instruments")
 async def get_instruments_positions():
 
-    data = collection.find({})
     positions = []
+    try:
+        data = collection.find({})
+    except  Exception as e:
+        positions = f"Error: {e}"
 
     for pos in data:
         positions.append({
